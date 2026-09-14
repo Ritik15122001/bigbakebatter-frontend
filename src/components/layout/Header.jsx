@@ -26,6 +26,7 @@ export default function Header() {
   const profile = useUserStore((s) => s.profile);
   const openMobileMenu = useUiStore((s) => s.openMobileMenu);
   const openCartDrawer = useUiStore((s) => s.openCartDrawer);
+  const openSearch = useUiStore((s) => s.openSearch);
 
   useEffect(() => {
     const onScroll = () => setStuck(window.scrollY > 8);
@@ -73,7 +74,7 @@ export default function Header() {
             </div>
             <NavSearch />
             <div className="nav-actions">
-              <button className="btn-icon only-mobile" aria-label="Search">
+              <button className="btn-icon only-mobile" aria-label="Search" onClick={openSearch}>
                 <Icon name="search" />
               </button>
               <Link className="btn-icon d-none-sm" to="/wishlist" aria-label="Wishlist" title="Wishlist">

@@ -8,6 +8,7 @@ import { money } from '../../utils/format';
 import { useWishlistStore } from '../../store/wishlistStore';
 import { useCartStore } from '../../store/cartStore';
 import { useUiStore } from '../../store/uiStore';
+import { shareProduct } from '../../utils/share';
 
 export default function ProductCard({ product, className = '' }) {
   const navigate = useNavigate();
@@ -38,6 +39,11 @@ export default function ProductCard({ product, className = '' }) {
     useUiStore.getState().openAddonsModal();
   };
 
+  const handleShare = (e) => {
+    e.stopPropagation();
+    shareProduct(product, pushToast);
+  };
+
   return (
     <article
       className={`pcard ${out ? 'out' : ''} ${className}`.trim()}
@@ -53,6 +59,9 @@ export default function ProductCard({ product, className = '' }) {
           {product.tag && <span className={`badge ${product.tag === 'Seasonal' ? 'gold' : ''}`}>{product.tag}</span>}
           {product.stock === 'Low stock' && <span className="badge warn">Only {product.qty} left</span>}
         </div>
+        <button className="pcard-share" aria-label="Share this cake" onClick={handleShare}>
+          <Icon name="share" className="icon icon-sm" />
+        </button>
         <button
           className={`pcard-wish ${isWished ? 'on' : ''}`}
           aria-label="Add to wishlist"

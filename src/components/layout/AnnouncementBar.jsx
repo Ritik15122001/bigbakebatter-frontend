@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Icon from '../common/Icon';
 import PureVegMark from '../common/PureVegMark';
 import { useContentStore } from '../../store/contentStore';
@@ -35,7 +36,7 @@ export default function AnnouncementBar() {
           ))}
         </div>
         <div className="announce-side">
-          <a href="#help">Help</a>
+          <Link to="/track">Track order</Link>
         </div>
       </div>
     </div>

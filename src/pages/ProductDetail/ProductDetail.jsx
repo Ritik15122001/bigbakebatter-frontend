@@ -16,6 +16,7 @@ import { useCartStore } from '../../store/cartStore';
 import { useWishlistStore } from '../../store/wishlistStore';
 import { useUiStore } from '../../store/uiStore';
 import { useProductStore } from '../../store/productStore';
+import { shareProduct } from '../../utils/share';
 
 const TABS = ['Description', 'Ingredients & care', 'Delivery', 'Reviews'];
 
@@ -77,6 +78,8 @@ export default function ProductDetail() {
     toggleWish(product.id);
     pushToast({ title: isWished ? 'Removed from wishlist' : 'Added to wishlist', kind: isWished ? 'info' : 'ok' });
   };
+
+  const handleShare = () => shareProduct(product, pushToast);
 
   return (
     <div className="container section">
@@ -160,6 +163,9 @@ export default function ProductDetail() {
             <QuantitySelector qty={qty} onChange={(v) => setQty(Math.max(1, v))} />
             <button className={`btn-icon ${isWished ? 'on' : ''}`} aria-label="Wishlist" onClick={handleWish} style={isWished ? { color: 'var(--c-accent)' } : undefined}>
               <Icon name="heart" />
+            </button>
+            <button className="btn-icon" aria-label="Share this cake" onClick={handleShare}>
+              <Icon name="share" />
             </button>
           </div>
 

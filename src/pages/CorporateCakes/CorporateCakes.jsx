@@ -6,7 +6,14 @@ import ProductCard from '../../components/product/ProductCard';
 import { IMG, QL } from '../../data/products';
 import { useProductStore } from '../../store/productStore';
 import { useUiStore } from '../../store/uiStore';
+import { useHeroSlider } from '../../hooks/useHeroSlider';
 import { submitEnquiry } from '../../services/enquiryService';
+
+const HERO_IMAGES = [
+  { src: IMG + 'photo-1733119673501-20e57711ef84' + QL, alt: 'Office team celebrating with cake', ph: ['#5A3B27', '#2F1B10', '#7A5334'] },
+  { src: IMG + 'photo-1733119673475-c7a31c393d42' + QL, alt: 'Colleagues gathered around a birthday cake', ph: ['#5A3B27', '#2F1B10', '#7A5334'] },
+  { src: IMG + 'photo-1758520144658-c87be518b87e' + QL, alt: 'Office workers celebrating with cake and gifts', ph: ['#5A3B27', '#2F1B10', '#7A5334'] },
+];
 
 const PERKS = [
   { icon: 'pkg', text: 'Bulk & recurring orders' },
@@ -28,6 +35,7 @@ export default function CorporateCakes() {
   const products = useProductStore((s) => s.products);
   const pushToast = useUiStore((s) => s.pushToast);
   const corporateProducts = useMemo(() => products.filter((p) => p.corporate).slice(0, 8), [products]);
+  const { index: heroIdx, goTo: goToHero, setPaused: setHeroPaused } = useHeroSlider(HERO_IMAGES.length, 3500);
 
   const [form, setForm] = useState({ company: '', name: '', email: '', phone: '', quantity: '', date: '', budget: '', message: '' });
   const [submitting, setSubmitting] = useState(false);
@@ -68,8 +76,26 @@ export default function CorporateCakes() {
       <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Corporate cakes' }]} />
 
       <div className="auth-wrap" style={{ marginBottom: 'var(--s-9)' }}>
-        <div className="auth-side">
-          <Pic src={IMG + 'photo-1733119673501-20e57711ef84' + QL} alt="Office team celebrating with cake" ph={['#5A3B27', '#2F1B10', '#7A5334']} />
+        <div className="auth-side" onMouseEnter={() => setHeroPaused(true)} onMouseLeave={() => setHeroPaused(false)}>
+          {HERO_IMAGES.map((img, i) => (
+            <div key={img.src} className={`auth-side-slide ${i === heroIdx ? 'on' : ''}`}>
+              <Pic src={img.src} alt={img.alt} ph={img.ph} />
+            </div>
+          ))}
+          {HERO_IMAGES.length > 1 && (
+            <div className="auth-side-dots" role="tablist" aria-label="Slides">
+              {HERO_IMAGES.map((img, i) => (
+                <button
+                  key={img.src}
+                  className={i === heroIdx ? 'on' : ''}
+                  role="tab"
+                  aria-label={`Slide ${i + 1}`}
+                  aria-selected={i === heroIdx}
+                  onClick={() => goToHero(i)}
+                />
+              ))}
+            </div>
+          )}
           <div className="ov">
             <div>
               <span className="kicker kicker-script" style={{ color: 'var(--c-accent)' }}>For teams &amp; businesses</span>

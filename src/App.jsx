@@ -3,7 +3,9 @@ import { useEffect } from 'react';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import MobileDrawer from './components/navigation/MobileDrawer';
+import MobileSearchModal from './components/navigation/MobileSearchModal';
 import CartDrawer from './components/cart/CartDrawer';
+import AppLoader from './components/common/AppLoader';
 import AddonsModal from './components/modals/AddonsModal';
 import ToastStack from './components/common/ToastStack';
 import Home from './pages/Home';
@@ -45,6 +47,9 @@ export default function App() {
   const fetchCatalog = useProductStore((s) => s.fetchCatalog);
   const fetchContent = useContentStore((s) => s.fetchContent);
   const hydrateUser = useUserStore((s) => s.hydrate);
+  const catalogReady = useProductStore((s) => s.catalogLoaded || !!s.catalogError);
+  const contentReady = useContentStore((s) => s.contentLoaded || !!s.contentError);
+  const appReady = catalogReady && contentReady;
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -64,6 +69,7 @@ export default function App() {
 
   return (
     <>
+      <AppLoader ready={appReady} />
       <a className="skip-link" href="#main">
         Skip to content
       </a>
@@ -96,6 +102,7 @@ export default function App() {
       </main>
       <Footer />
       <MobileDrawer />
+      <MobileSearchModal />
       <CartDrawer />
       <AddonsModal />
       <ToastStack />

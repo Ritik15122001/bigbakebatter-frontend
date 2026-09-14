@@ -126,6 +126,12 @@ export default function Account() {
                         Track
                       </Link>
                     </div>
+                    {o.addr && (
+                      <div className="row gap-2" style={{ padding: '0 var(--s-5) var(--s-4)', alignItems: 'flex-start' }}>
+                        <Icon name="home" className="icon icon-sm" style={{ color: 'var(--c-faint)', marginTop: 2, flex: 'none' }} />
+                        <span className="tiny muted">{o.addr}</span>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>

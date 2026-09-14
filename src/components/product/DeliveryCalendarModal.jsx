@@ -2,6 +2,8 @@ import { useState } from 'react';
 import Modal from '../common/Modal';
 import Icon from '../common/Icon';
 import { SLOTS } from '../../store/orderStore';
+import { useContentStore } from '../../store/contentStore';
+import { telHref } from '../../utils/format';
 
 const DOW = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
@@ -17,6 +19,7 @@ function buildDays(monthDate) {
 }
 
 export default function DeliveryCalendarModal({ open, onClose, date, slot, onPick }) {
+  const phone = useContentStore((s) => s.settings?.phones?.[0]);
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const [monthDate, setMonthDate] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
@@ -81,6 +84,16 @@ export default function DeliveryCalendarModal({ open, onClose, date, slot, onPic
           ))}
         </div>
       </div>
+
+      {phone && (
+        <div className="row gap-3 center" style={{ marginTop: 18, padding: '12px 14px', background: 'var(--c-accent-soft)', borderRadius: 'var(--r-md)' }}>
+          <Icon name="phone" className="icon icon-sm" style={{ color: 'var(--c-accent)', flex: 'none' }} />
+          <span className="small grow">Need it sooner than these slots?</span>
+          <a className="btn btn-primary btn-sm" href={telHref(phone)}>
+            Call for instant delivery
+          </a>
+        </div>
+      )}
     </Modal>
   );
 }

@@ -18,6 +18,9 @@ export const useUiStore = create((set) => ({
   openAddonsModal: () => set({ addonsModalOpen: true }),
   closeAddonsModal: () => set({ addonsModalOpen: false }),
 
+  openSearch: () => set({ searchOpen: true }),
+  closeSearch: () => set({ searchOpen: false }),
+
   closeAllOverlays: () => set({ mobileMenuOpen: false, cartDrawerOpen: false, searchOpen: false, addonsModalOpen: false }),
 
   pushToast: (toast) => {

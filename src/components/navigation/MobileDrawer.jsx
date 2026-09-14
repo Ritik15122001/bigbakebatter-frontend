@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Icon from '../common/Icon';
 import { useUiStore } from '../../store/uiStore';
@@ -6,9 +7,8 @@ import { useProductStore } from '../../store/productStore';
 import { useContentStore } from '../../store/contentStore';
 import { formatPhone, telHref } from '../../utils/format';
 
-const LINKS = [
-  { to: '/', label: 'Home', icon: 'home' },
-  { to: '/shop', label: 'Shop', icon: 'bag' },
+const LINKS_BEFORE = [{ to: '/', label: 'Home', icon: 'home' }];
+const LINKS_AFTER = [
   { to: '/custom', label: 'Custom Cakes', icon: 'sparkles' },
   { to: '/corporate-cakes', label: 'Corporate Cakes', icon: 'pkg' },
   { to: '/about', label: 'About', icon: 'info' },
@@ -24,6 +24,7 @@ export default function MobileDrawer() {
   const closeMobileMenu = useUiStore((s) => s.closeMobileMenu);
   const categories = useProductStore((s) => s.categories);
   const phone = useContentStore((s) => s.settings?.phones?.[0]);
+  const [shopOpen, setShopOpen] = useState(false);
 
   useEscapeToClose(open, closeMobileMenu);
 
@@ -49,7 +50,40 @@ export default function MobileDrawer() {
         </div>
         <div className="drawer-body">
           <nav className="mnav">
-            {LINKS.map((l) => (
+            {LINKS_BEFORE.map((l) => (
+              <Link key={l.to} to={l.to} onClick={closeMobileMenu}>
+                <span className="row gap-3 center">
+                  <Icon name={l.icon} className="icon icon-sm" />
+                  {l.label}
+                </span>
+                <Icon name="aright" className="icon icon-sm" />
+              </Link>
+            ))}
+
+            <button type="button" className="mnav-trigger" onClick={() => setShopOpen((v) => !v)} aria-expanded={shopOpen}>
+              <span className="row gap-3 center">
+                <Icon name="bag" className="icon icon-sm" />
+                Shop
+              </span>
+              <Icon name="cdown" className={`icon icon-sm ${shopOpen ? 'on' : ''}`} />
+            </button>
+            {shopOpen && (
+              <div className="mnav-submenu">
+                {categories
+                  .filter((c) => c.active)
+                  .map((c) => (
+                    <Link key={c.name} to={`/shop?category=${encodeURIComponent(c.name)}`} onClick={closeMobileMenu}>
+                      {c.name}
+                    </Link>
+                  ))}
+                <Link to="/shop" onClick={closeMobileMenu} style={{ fontWeight: 700, color: 'var(--c-ink)' }}>
+                  View all cakes
+                  <Icon name="aright" className="icon icon-sm" />
+                </Link>
+              </div>
+            )}
+
+            {LINKS_AFTER.map((l) => (
               <Link key={l.to} to={l.to} onClick={closeMobileMenu}>
                 <span className="row gap-3 center">
                   <Icon name={l.icon} className="icon icon-sm" />
@@ -59,18 +93,6 @@ export default function MobileDrawer() {
               </Link>
             ))}
           </nav>
-          <div className="stack gap-3" style={{ marginTop: 28 }}>
-            <span className="kicker muted">Shop by category</span>
-            <div className="row gap-2 wrap">
-              {categories
-                .filter((c) => c.active)
-                .map((c) => (
-                  <Link key={c.name} className="chip" to={`/shop?category=${encodeURIComponent(c.name)}`} onClick={closeMobileMenu}>
-                    {c.name}
-                  </Link>
-                ))}
-            </div>
-          </div>
         </div>
         <div className="drawer-foot">
           <Link className="btn btn-primary btn-block" to="/shop" onClick={closeMobileMenu}>
