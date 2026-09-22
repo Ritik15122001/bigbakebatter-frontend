@@ -99,7 +99,7 @@ export default function Header() {
                   Sign in
                 </Link>
               )}
-              <Link className="btn-icon only-mobile" to={isLoggedIn ? '/account' : '/login'} aria-label="Account">
+              <Link className="btn-icon only-mobile" to={isLoggedIn ? '/account' : '/login?redirect=/account'} aria-label="Account">
                 <Icon name="user" />
               </Link>
             </div>

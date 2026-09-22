@@ -63,7 +63,7 @@ export default function Account() {
   if (!isLoggedIn) {
     return (
       <div className="container section text-center">
-        <EmptyState icon="user" title="Sign in to view your account" text="Track orders, manage payments, save addresses and reorder favourites." action={{ to: '/login', label: 'Sign in' }} />
+        <EmptyState icon="user" title="Sign in to view your account" text="Track orders, manage payments, save addresses and reorder favourites." action={{ to: '/login?redirect=/account', label: 'Sign in' }} />
       </div>
     );
   }

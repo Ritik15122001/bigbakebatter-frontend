@@ -16,7 +16,7 @@ export default function Login() {
   const register = useUserStore((s) => s.register);
   const pushToast = useUiStore((s) => s.pushToast);
 
-  const redirectTo = searchParams.get('redirect') || '/account';
+  const redirectTo = searchParams.get('redirect') || '/';
   const [mode, setMode] = useState(searchParams.get('mode') === 'signup' ? 'signup' : 'signin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
