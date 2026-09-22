@@ -210,17 +210,7 @@ export default function Account() {
             </>
           )}
 
-          {tab === 'profile' && (
-            <>
-              <div className="sec-head">
-                <div>
-                  <h2>Profile &amp; addresses</h2>
-                  <p>Keep your details and delivery addresses up to date.</p>
-                </div>
-              </div>
-              <ProfileTab profile={profile} />
-            </>
-          )}
+          {tab === 'profile' && <ProfileTab profile={profile} />}
         </div>
       </div>
     </div>

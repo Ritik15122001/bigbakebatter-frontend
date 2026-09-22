@@ -16,7 +16,9 @@ export const useOrderStore = create((set, get) => ({
 
   placeOrder: async (payload) => {
     const order = await createOrder(payload);
-    set({ lastOrder: order });
+    // Invalidate cached account data so the next visit to My Orders / Payments
+    // refetches instead of showing the list as it was before this order.
+    set({ lastOrder: order, myOrdersLoaded: false, myTransactionsLoaded: false });
     return order;
   },
 
