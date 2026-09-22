@@ -118,6 +118,16 @@ export function weightsFor(base) {
   return WEIGHTS_DEF.map((o) => ({ w: o.w, amount: Math.round((base * o.mult) / 10) * 10 }));
 }
 
+// Prefers explicit per-weight prices the admin set on the product; any
+// weight left unset falls back to the default multiplier of the base price.
+export function weightsForProduct(product) {
+  const overrides = new Map((product?.weights || []).map((w) => [w.w, w.price]));
+  return WEIGHTS_DEF.map((o) => ({
+    w: o.w,
+    amount: overrides.has(o.w) ? overrides.get(o.w) : Math.round((product.base * o.mult) / 10) * 10,
+  }));
+}
+
 export function isBox(product) {
   return product.cat === 'Brownies' || product.cat === 'Cupcakes';
 }

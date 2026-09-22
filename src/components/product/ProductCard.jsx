@@ -3,7 +3,7 @@ import Icon from '../common/Icon';
 import Stars from '../common/Stars';
 import Pic from '../common/Pic';
 import PureVegMark from '../common/PureVegMark';
-import { weightsFor } from '../../data/products';
+import { weightsForProduct } from '../../data/products';
 import { money } from '../../utils/format';
 import { useWishlistStore } from '../../store/wishlistStore';
 import { useCartStore } from '../../store/cartStore';
@@ -17,7 +17,7 @@ export default function ProductCard({ product, className = '' }) {
   const addItem = useCartStore((s) => s.addItem);
   const pushToast = useUiStore((s) => s.pushToast);
 
-  const weights = weightsFor(product.base);
+  const weights = weightsForProduct(product);
   const out = product.stock === 'Out of stock';
 
   const handleOpen = () => navigate(`/product/${product.id}`);

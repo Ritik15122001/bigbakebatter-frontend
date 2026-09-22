@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { weightsFor, isBox } from '../data/products';
+import { weightsForProduct, isBox } from '../data/products';
 
 function lineKey(pid, weightIndex, eggless, msg) {
   return `${pid}|${weightIndex}|${eggless ? 1 : 0}|${msg || ''}`;
@@ -12,7 +12,7 @@ export const useCartStore = create((set, get) => ({
 
   addItem: (product, weightIndex = 0, qty = 1, opts = {}) => {
     const wIdx = isBox(product) ? 0 : weightIndex;
-    const weights = weightsFor(product.base);
+    const weights = weightsForProduct(product);
     const key = lineKey(product.id, wIdx, opts.eggless, opts.msg);
     set((state) => {
       const existing = state.items.find((i) => i.key === key);

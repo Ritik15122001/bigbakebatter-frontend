@@ -19,6 +19,7 @@ img, picture, svg, video { max-width: 100%; display: block; }
 input, button, textarea, select { font: inherit; color: inherit; }
 button { background: none; border: 0; cursor: pointer; }
 a { color: inherit; text-decoration: none; }
+.link-underline { color: var(--c-accent); text-decoration: underline; text-underline-offset: 2px; }
 :focus-visible { outline: 2px solid var(--c-accent); outline-offset: 2px; border-radius: 4px; }
 ::selection { background: var(--c-accent); color: #fff; }
 
@@ -786,6 +787,18 @@ strong, b { font-weight: 600; color: var(--c-ink); }
 .summary { position: sticky; top: calc(var(--nav-h) + 16px); background: var(--c-surface); border: 1px solid var(--c-border); border-radius: var(--r-lg); padding: var(--s-6); }
 .sum-row { display: flex; justify-content: space-between; gap: var(--s-4); padding: 8px 0; font-size: var(--fs-sm); }
 .sum-row.total { border-top: 1px solid var(--c-border); margin-top: 8px; padding-top: 16px; font-size: var(--fs-lg); font-family: var(--f-sans); font-weight: 700; color: var(--c-ink); }
+
+/* Rich read-only detail view, used in the payment receipt modal */
+.dv-top { display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); padding-bottom: var(--s-5); margin-bottom: var(--s-1); border-bottom: 1px solid var(--c-border); }
+.dv-top-ico { width: 46px; height: 46px; border-radius: var(--r-md); display: grid; place-items: center; flex: none; background: var(--c-accent-soft); color: var(--c-accent-ink); }
+.dv-top-amt { font-size: 1.5rem; font-weight: 800; color: var(--c-ink); font-variant-numeric: tabular-nums; }
+.dv-sec-title { font-size: var(--fs-xxs); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--c-muted); margin: 4px 0 -4px; }
+.dv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-4) var(--s-5); }
+.dv-field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.dv-field.full { grid-column: 1 / -1; }
+.dv-field label { font-size: var(--fs-xxs); text-transform: uppercase; letter-spacing: 0.04em; color: var(--c-muted); font-weight: 600; }
+.dv-field .v { font-size: var(--fs-sm); color: var(--c-ink); font-weight: 600; word-break: break-word; }
+.dv-mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.82em; letter-spacing: -0.01em; word-break: break-all; }
 .promo-row { display: flex; gap: 8px; margin: var(--s-4) 0; }
 .saved-strip { display: flex; gap: var(--s-4); overflow-x: auto; padding-bottom: 8px; }
 
@@ -932,9 +945,10 @@ strong, b { font-weight: 600; color: var(--c-ink); }
 
 /* transactions */
 .txn-list { display: flex; flex-direction: column; border: 1px solid var(--c-border); border-radius: var(--r-lg); background: var(--c-surface); overflow: hidden; }
-.txn-row { display: grid; grid-template-columns: 40px minmax(0, 1.4fr) minmax(0, 1fr) auto; gap: var(--s-4); align-items: center; padding: var(--s-4) var(--s-5); border-bottom: 1px solid var(--c-border); }
+.txn-row { display: grid; grid-template-columns: 40px minmax(0, 1.4fr) minmax(0, 1fr) auto; gap: var(--s-4); align-items: center; padding: var(--s-4) var(--s-5); border-bottom: 1px solid var(--c-border); width: 100%; background: none; border-left: 0; border-right: 0; border-top: 0; text-align: left; font: inherit; color: inherit; cursor: pointer; }
 .txn-row:last-child { border-bottom: 0; }
 .txn-row:hover { background: var(--c-surface-2); }
+.txn-row:hover .link-underline { text-decoration: underline; }
 .txn-ico { width: 34px; height: 34px; border-radius: var(--r-md); display: grid; place-items: center; background: var(--c-success-soft); color: var(--c-success); flex: none; }
 .txn-ico.refunded { background: var(--c-warning-soft); color: var(--c-warning); }
 .txn-ico.failed { background: var(--c-error-soft); color: var(--c-error); }

@@ -10,7 +10,7 @@ import SectionHead from '../../components/common/SectionHead';
 import ProductGrid from '../../components/product/ProductGrid';
 import QuantitySelector from '../../components/cart/QuantitySelector';
 import DeliveryCalendarModal from '../../components/product/DeliveryCalendarModal';
-import { weightsFor } from '../../data/products';
+import { weightsForProduct } from '../../data/products';
 import { money, fmtDateShort } from '../../utils/format';
 import { useCartStore } from '../../store/cartStore';
 import { useWishlistStore } from '../../store/wishlistStore';
@@ -58,7 +58,7 @@ export default function ProductDetail() {
     );
   }
 
-  const weights = weightsFor(product.base);
+  const weights = weightsForProduct(product);
   const price = weights[weightIdx].amount;
   const out = product.stock === 'Out of stock';
 
