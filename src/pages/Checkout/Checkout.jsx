@@ -8,6 +8,7 @@ import { useCartStore } from '../../store/cartStore';
 import { useOrderStore } from '../../store/orderStore';
 import { useUserStore } from '../../store/userStore';
 import { useUiStore } from '../../store/uiStore';
+import { createRazorpayOrder, openRazorpayCheckout } from '../../services/paymentService';
 
 const PAY_OPTS = [
   { key: 'upi', label: 'UPI', value: 'UPI', sub: 'Google Pay, PhonePe, Paytm & more', icon: 'phone' },
@@ -59,6 +60,17 @@ export default function Checkout() {
     }
     setPlacing(true);
     try {
+      const rzpOrder = await createRazorpayOrder(total);
+      const payment = await openRazorpayCheckout({
+        orderId: rzpOrder.orderId,
+        amount: rzpOrder.amount,
+        currency: rzpOrder.currency,
+        keyId: rzpOrder.keyId,
+        name,
+        email,
+        phone,
+      });
+
       const order = await placeOrder({
         customer: name,
         email,
@@ -71,12 +83,17 @@ export default function Checkout() {
         msg,
         notes,
         pay: PAY_OPTS.find((p) => p.key === pay)?.value,
+        ...payment,
       });
       orderPlacedRef.current = true;
       clearCart();
       navigate('/confirmation', { state: { orderCode: order.code } });
     } catch (err) {
-      pushToast({ title: 'Could not place order', subtitle: err.message, kind: 'err' });
+      if (err.message === 'Payment cancelled') {
+        pushToast({ title: 'Payment cancelled', subtitle: 'Your cart is still saved — try again whenever you\'re ready.', kind: 'info' });
+      } else {
+        pushToast({ title: 'Could not place order', subtitle: err.message, kind: 'err' });
+      }
       setPlacing(false);
     }
   };
@@ -188,8 +205,12 @@ export default function Checkout() {
             <span>{money(total)}</span>
           </div>
           <button className="btn btn-primary btn-block" type="submit" disabled={placing}>
-            Place order · {money(total)}
+            <Icon name="lock" className="icon icon-sm" />
+            {placing ? 'Opening secure payment…' : `Pay ${money(total)}`}
           </button>
+          <p className="tiny muted text-center" style={{ marginTop: 10 }}>
+            Payments secured by Razorpay
+          </p>
         </aside>
       </form>
 

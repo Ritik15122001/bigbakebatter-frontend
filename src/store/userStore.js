@@ -1,5 +1,8 @@
 import { create } from 'zustand';
-import { loginUser, registerUser, fetchMe, updateMe } from '../services/userService';
+import {
+  loginUser, registerUser, fetchMe, updateMe, changePassword,
+  addAddress, updateAddress, setDefaultAddress, deleteAddress,
+} from '../services/userService';
 import { setAuthToken } from '../services/api';
 
 const STORAGE_KEY = 'bbb_token';
@@ -48,6 +51,32 @@ export const useUserStore = create((set) => ({
 
   updateProfile: async (patch) => {
     const user = await updateMe(patch);
+    set({ profile: user });
+    return user;
+  },
+
+  changePassword: (currentPassword, newPassword) => changePassword(currentPassword, newPassword),
+
+  addAddress: async (payload) => {
+    const user = await addAddress(payload);
+    set({ profile: user });
+    return user;
+  },
+
+  editAddress: async (id, payload) => {
+    const user = await updateAddress(id, payload);
+    set({ profile: user });
+    return user;
+  },
+
+  makeAddressDefault: async (id) => {
+    const user = await setDefaultAddress(id);
+    set({ profile: user });
+    return user;
+  },
+
+  removeAddress: async (id) => {
+    const user = await deleteAddress(id);
     set({ profile: user });
     return user;
   },

@@ -1,10 +1,14 @@
 import { create } from 'zustand';
-import { createOrder, getMyOrders, trackOrder, SLOTS } from '../services/orderService';
+import {
+  createOrder, getMyOrders, getMyOrder, getMyTransactions, trackOrder, SLOTS,
+} from '../services/orderService';
 
 export const useOrderStore = create((set, get) => ({
   lastOrder: null,
   myOrders: [],
   myOrdersLoaded: false,
+  myTransactions: [],
+  myTransactionsLoaded: false,
   checkout: { pay: 'upi', date: null, slot: null, msg: '' },
 
   setCheckoutField: (field, value) => set((state) => ({ checkout: { ...state.checkout, [field]: value } })),
@@ -22,9 +26,21 @@ export const useOrderStore = create((set, get) => ({
     return orders;
   },
 
+  fetchMyTransactions: async () => {
+    const transactions = await getMyTransactions();
+    set({ myTransactions: transactions, myTransactionsLoaded: true });
+    return transactions;
+  },
+
+  fetchMyOrder: (code) => getMyOrder(code),
+
   trackByCode: (code) => trackOrder(code),
 
   getOrder: (code) => get().myOrders.find((o) => o.code === code) || get().lastOrder,
+
+  resetAccountData: () => set({
+    myOrders: [], myOrdersLoaded: false, myTransactions: [], myTransactionsLoaded: false,
+  }),
 }));
 
 export { SLOTS };

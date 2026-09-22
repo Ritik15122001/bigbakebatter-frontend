@@ -21,3 +21,23 @@ export async function fetchMe() {
 export async function updateMe(payload) {
   return api.patch(ENDPOINTS.me, payload);
 }
+
+export async function changePassword(currentPassword, newPassword) {
+  return api.patch(ENDPOINTS.changePassword, { currentPassword, newPassword });
+}
+
+export async function addAddress(payload) {
+  return api.post(ENDPOINTS.addresses, payload);
+}
+
+export async function updateAddress(id, payload) {
+  return api.patch(ENDPOINTS.addressById(id), payload);
+}
+
+export async function setDefaultAddress(id) {
+  return api.patch(ENDPOINTS.addressDefault(id));
+}
+
+export async function deleteAddress(id) {
+  return api.del(ENDPOINTS.addressById(id));
+}
